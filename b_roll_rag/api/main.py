@@ -68,8 +68,8 @@ async def search_video(req: QueryRequest):
             if os.path.exists(broll_dir):
                 shutil.rmtree(broll_dir)
             
-            # Fetch a few videos to process and rank
-            fetched_videos = BRollFetcher.fetch_videos(query=req.query, max_videos=3, orientation="landscape", output_dir=broll_dir)
+            # Fetch 10 videos to process and rank as expected
+            fetched_videos = BRollFetcher.fetch_videos(query=req.query, max_videos=10, orientation="landscape", output_dir=broll_dir)
             if fetched_videos:
                 processor.process_broll_directory(broll_dir)
                 results = search_engine.search(req.query, top_k=req.top_k, min_distance_threshold=req.threshold)

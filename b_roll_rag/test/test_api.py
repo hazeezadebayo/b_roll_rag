@@ -64,12 +64,12 @@ def test_api_pexels_fallback_no_video(args):
         
         data = response.json()
         assert len(data) > 0, "Expected at least 1 result (the fallback)"
-        fallback_result = data[0]
         
-        print("Pexels Fallback generated at:", fallback_result["video_url"])
-        assert fallback_result["scene"]["scene_idx"] != -1, "Expected a genuine scene match from Pexels, not an avatar fallback"
-        assert "cut_" in fallback_result["video_url"]
-        assert os.path.exists(fallback_result["video_url"]), "Fallback video file does not exist!"
+        for fallback_result in data:
+            print("Pexels Fallback generated at:", fallback_result["video_url"])
+            assert fallback_result["scene"]["scene_idx"] != -1, "Expected a genuine scene match from Pexels, not an avatar fallback"
+            assert "cut_" in fallback_result["video_url"]
+            assert os.path.exists(fallback_result["video_url"]), "Fallback video file does not exist!"
 
 def test_api_avatar_fallback_no_video(args):
     """

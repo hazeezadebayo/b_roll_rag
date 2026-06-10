@@ -27,9 +27,11 @@ class SearchEngine:
             start = res["scene"]["start_time"]
             end = res["scene"]["end_time"]
             
-            # Check if this segment overlaps with any already approved segment
+            # Check if this segment overlaps temporally with an approved segment FROM THE SAME VIDEO
             is_overlap = any(
-                (start < approved["scene"]["end_time"] and end > approved["scene"]["start_time"])
+                (start < approved["scene"]["end_time"] and 
+                 end > approved["scene"]["start_time"] and 
+                 res["scene"].get("video_path") == approved["scene"].get("video_path"))
                 for approved in deduped
             )
             
