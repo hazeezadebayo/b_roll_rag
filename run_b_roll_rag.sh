@@ -87,7 +87,7 @@ function run_pipeline() {
 
 function clean_outputs() {
     echo "Cleaning generated outputs..."
-    rm -rf "$OUTPUT_DIR"/*
+    find "$OUTPUT_DIR" -type f -not -name '.gitkeep' -delete
     echo "Cleaned."
 }
 
