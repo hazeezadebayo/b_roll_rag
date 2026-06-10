@@ -87,10 +87,17 @@ async def search_video(req: QueryRequest):
     response = []
     
     report_lines = [
-        f"Search Report for Query: '{req.query}'",
-        f"Top K Requested: {req.top_k}",
-        f"Total Scenes Matched: {len(results)}",
-        "-" * 40
+        f"==================================================",
+        f"             B-ROLL RAG SEARCH REPORT             ",
+        f"==================================================",
+        f"Search Query       : '{req.query}'",
+        f"Top-K Requested    : {req.top_k}",
+        f"Total Indexed Nodes: {len(processor.scene_metadata) if processor else 0}",
+        f"Unique Scenes Found: {len(set(m['scene_idx'] for m in processor.scene_metadata)) if processor else 0}",
+        f"Results Matched    : {len(results)}",
+        f"==================================================",
+        f"MATCH BREAKDOWN:",
+        f"--------------------------------------------------"
     ]
 
     for idx, res in enumerate(results):
