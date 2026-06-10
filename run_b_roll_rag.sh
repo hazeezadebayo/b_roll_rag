@@ -6,6 +6,14 @@
 COMMAND=$1
 MODEL_NAME=${2:-clip}
 TOP_K=${3:-3}
+FRAMES=${4:-1}
+TRANSCRIPT=${5:-"None"}
+MODE=${6:-"mixed"}
+ASPECT_RATIO=${7:-"original"}
+VIDEO_NAME=${8:-"None"}
+QUERY=${9:-"person doing pushup"}
+SCENARIO=${10:-"ALL"}
+THRESH=${11:-1.40}
 
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INPUT_DIR="$PROJECT_DIR/b_roll_rag/data/input"
@@ -19,7 +27,7 @@ function show_help() {
     echo ""
     echo "Commands:"
     echo "  build - Build the Docker container"
-    echo "  up    - Run pipeline. Args: [MODEL] [TOP_K] [FRAMES] [TRANSCRIPT] [MODE] [ASPECT] [VIDEO] [QUERY] [SCENARIO]"
+    echo "  up    - Run pipeline. Args: [MODEL] [TOP_K] [FRAMES] [TRANSCRIPT] [MODE] [ASPECT] [VIDEO] [QUERY] [SCENARIO] [THRESH]"
     echo "  clean - Remove generated output mp4s"
     echo "  kill  - Stop running containers"
 }
@@ -73,7 +81,8 @@ function run_pipeline() {
             --aspect_ratio "$ASPECT_RATIO" \
             --video "$VIDEO_NAME" \
             --query "$QUERY" \
-            --scenario "$SCENARIO"
+            --scenario "$SCENARIO" \
+            --threshold "$THRESH"
 }
 
 function clean_outputs() {

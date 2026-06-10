@@ -56,7 +56,7 @@ async def search_video(req: QueryRequest):
     if search_engine is None or processor.scene_index is None or processor.scene_index.ntotal == 0:
         results = []
     else:
-        results = search_engine.search(req.query, top_k=req.top_k)
+        results = search_engine.search(req.query, top_k=req.top_k, min_distance_threshold=req.threshold)
         
     # Trigger fallback if no video is indexed or search yields 0 results
     if not results:
@@ -72,7 +72,7 @@ async def search_video(req: QueryRequest):
             fetched_videos = BRollFetcher.fetch_videos(query=req.query, max_videos=3, orientation="landscape", output_dir=broll_dir)
             if fetched_videos:
                 processor.process_broll_directory(broll_dir)
-                results = search_engine.search(req.query, top_k=req.top_k)
+                results = search_engine.search(req.query, top_k=req.top_k, min_distance_threshold=req.threshold)
                 
         # Avatar fallback if Pexels fails, key not provided, or still no results
         if not results:

@@ -9,6 +9,7 @@ from typing import Optional
 class QueryRequest(BaseModel):
     query: str = Field(..., example="A person doing a pushup")
     top_k: int = Field(default=1, ge=1)
+    threshold: float = Field(default=1.40, example=1.30)
 
 class SceneInfo(BaseModel):
     scene_idx: int

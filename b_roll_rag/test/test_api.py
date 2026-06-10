@@ -36,7 +36,7 @@ def test_upload_and_search(args):
         else:
             print(f"Skipping actual upload, video {dummy_video_path} not found or None.")
         
-        search_res = client.post("/search", json={"query": args.query, "top_k": args.top_k})
+        search_res = client.post("/search", json={"query": args.query, "top_k": args.top_k, "threshold": args.threshold})
         assert search_res.status_code == 200
         
         data = search_res.json()
@@ -59,7 +59,7 @@ def test_api_pexels_fallback_no_video(args):
     with TestClient(app) as client:
         api_main.processor.scene_index = None
         
-        response = client.post("/search", json={"query": args.query, "top_k": args.top_k})
+        response = client.post("/search", json={"query": args.query, "top_k": args.top_k, "threshold": args.threshold})
         assert response.status_code == 200, f"Expected 200, got {response.status_code} - {response.text}"
         
         data = response.json()
@@ -83,7 +83,7 @@ def test_api_avatar_fallback_no_video(args):
         if "PEXELS_API_KEY" in os.environ:
             del os.environ["PEXELS_API_KEY"]
             
-        response = client.post("/search", json={"query": args.query, "top_k": args.top_k})
+        response = client.post("/search", json={"query": args.query, "top_k": args.top_k, "threshold": args.threshold})
         assert response.status_code == 200, f"Expected 200, got {response.status_code} - {response.text}"
         
         data = response.json()
@@ -106,6 +106,7 @@ if __name__ == "__main__":
     parser.add_argument("--video", type=str, default="t12s_vid.mp4")
     parser.add_argument("--query", type=str, default="person doing pushup")
     parser.add_argument("--scenario", type=str, default="ALL", choices=["S1", "S2", "S3", "ALL"])
+    parser.add_argument("--threshold", type=float, default=1.40)
     
     args = parser.parse_args()
 

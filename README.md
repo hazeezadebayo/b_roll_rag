@@ -37,16 +37,16 @@ We use the wrapper script `./run_b_roll_rag.sh up` to safely mount your director
 
 ### Scenario A: Process a Local Video
 
-Test the pipeline against a physical video file mounted in your `b_roll_rag/data/input/` folder. We will ask for 3 outputs, evaluating both text and visuals (`mixed`), and output them in TikTok format (`9:16`).
+Test the pipeline against a physical video file mounted in your `b_roll_rag/data/input/` folder. We will ask for 3 outputs, evaluating both text and visuals (`mixed`), and output them in TikTok format (`9:16`), with a strict similarity threshold of `1.3`.
 
 ```bash
-./run_b_roll_rag.sh up clip 3 3 dummy.srt mixed 9:16 didl_vid.mp4 "making coffee" S1
+./run_b_roll_rag.sh up clip 3 3 dummy.srt mixed 9:16 didl_vid.mp4 "making coffee" S1 1.3
 
 
-./run_b_roll_rag.sh up siglip 3 3 dummy.srt mixed 9:16 t12s_vid.mp4 "person doing pushup" S1
+./run_b_roll_rag.sh up siglip 3 3 dummy.srt mixed 9:16 t12s_vid.mp4 "person doing pushup" S1 1.3
 ```
 
-*What happens: The AI will index `t12s_vid.mp4` and `dummy.srt`, find the highest mathematical match for "person doing pushup", and output the trimmed clips to `b_roll_rag/data/output/`.*
+*What happens: The AI will index `t12s_vid.mp4` and `dummy.srt`, find the highest mathematical match for "person doing pushup", and output the trimmed clips to `b_roll_rag/data/output/`. Any match with a score below `1.3` will be rejected.*
 
 ### Scenario B: AI B-Roll Fetcher
 
