@@ -8,7 +8,8 @@ MODEL_NAME=${2:-clip}
 TOP_K=${3:-3}
 
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DATA_DIR="$PROJECT_DIR/b_roll_rag/data"
+INPUT_DIR="$PROJECT_DIR/b_roll_rag/data/input"
+OUTPUT_DIR="$PROJECT_DIR/b_roll_rag/data/output"
 CACHE_DIR="$PROJECT_DIR/.hf_cache"
 
 function show_help() {
@@ -53,7 +54,7 @@ function run_pipeline() {
         ENV_ARG="-e PEXELS_API_KEY=$PEXELS_API_KEY"
     fi
 
-    mkdir -p "$DATA_DIR" "$CACHE_DIR"
+    mkdir -p "$INPUT_DIR" "$OUTPUT_DIR" "$CACHE_DIR"
 
     # CRUCIAL FIX: Inject HF_HOME so transformers library knows exactly where to look/save inside the bound volume
     docker run --rm --user $(id -u):$(id -g) \
@@ -77,8 +78,7 @@ function run_pipeline() {
 
 function clean_outputs() {
     echo "Cleaning generated outputs..."
-    rm -f "$DATA_DIR"/*.mp4
-    rm -f "$DATA_DIR"/report.txt
+    rm -rf "$OUTPUT_DIR"/*
     echo "Cleaned."
 }
 

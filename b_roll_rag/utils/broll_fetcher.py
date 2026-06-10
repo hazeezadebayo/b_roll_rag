@@ -57,7 +57,7 @@ class BRollFetcher:
                     return None
 
     @staticmethod
-    def fetch_videos(query: str, max_videos: int = 5, orientation: str = "portrait", output_dir: str = "/app/b_roll_rag/data/broll") -> List[str]:
+    def fetch_videos(query: str, max_videos: int = 5, orientation: str = "portrait", output_dir: str = "/app/b_roll_rag/data/output/broll") -> List[str]:
         api_key = BRollFetcher._get_api_key()
         if not api_key:
             print("Error: PEXELS_API_KEY environment variable not set (or empty). Cannot fetch B-rolls.")

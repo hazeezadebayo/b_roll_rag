@@ -37,16 +37,16 @@ We use the wrapper script `./run_b_roll_rag.sh up` to safely mount your director
 
 ### Scenario A: Process a Local Video
 
-Test the pipeline against a physical video file mounted in your `b_roll_rag/data/` folder. We will ask for 3 outputs, evaluating both text and visuals (`mixed`), and output them in TikTok format (`9:16`).
+Test the pipeline against a physical video file mounted in your `b_roll_rag/data/input/` folder. We will ask for 3 outputs, evaluating both text and visuals (`mixed`), and output them in TikTok format (`9:16`).
 
 ```bash
 ./run_b_roll_rag.sh up clip 3 3 dummy.srt mixed 9:16 didl_vid.mp4 "making coffee" S1
 
 
-./run_b_roll_rag.sh up clip 3 3 dummy.srt mixed 9:16 t12s_vid.mp4 "person doing pushup" S1
+./run_b_roll_rag.sh up siglip 3 3 dummy.srt mixed 9:16 t12s_vid.mp4 "person doing pushup" S1
 ```
 
-*What happens: The AI will index `t12s_vid.mp4` and `dummy.srt`, find the highest mathematical match for "person doing pushup", and output the trimmed clips to `b_roll_rag/data/`.*
+*What happens: The AI will index `t12s_vid.mp4` and `dummy.srt`, find the highest mathematical match for "person doing pushup", and output the trimmed clips to `b_roll_rag/data/output/`.*
 
 ### Scenario B: AI B-Roll Fetcher
 
@@ -105,14 +105,14 @@ You can change the character preset and output explicitly:
 docker run --rm -v "$PWD:/app" -w /app b-roll-rag-app python b_roll_rag/utils/ugc_avatar_studio_fallback.py \
   --character female2 \
   --speech-text "Testing the fallback generation with face paint." \
-  --output b_roll_rag/data/female_avatar.mp4
+  --output b_roll_rag/data/output/female_avatar.mp4
 ```
 
 ---
 
 ## 🧹 Step 5: Cleanup
 
-If your `b_roll_rag/data/` folder is getting cluttered with generated MP4s, B-rolls, and reports, use the built-in clean command:
+If your `b_roll_rag/data/output/` folder is getting cluttered with generated MP4s, B-rolls, and reports, use the built-in clean command:
 
 ```bash
 ./run_b_roll_rag.sh clean
@@ -134,7 +134,7 @@ b_roll_rag/
 │   └── requirements.txt         # Container dependencies (torch, transformers, faiss, etc).
 │
 └── b_roll_rag/
-    ├── api/                 
+    ├── api/               
     │   └── main.py              # FastAPI entrypoint exposing the search engine over HTTP.
     │
     ├── core/

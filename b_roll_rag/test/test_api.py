@@ -26,7 +26,7 @@ def test_upload_and_search(args):
     """
     print(f"\n--- S1: Upload Video ({args.video}) and Search ('{args.query}') ---")
     with TestClient(app) as client:
-        dummy_video_path = f"/app/b_roll_rag/data/{args.video}" 
+        dummy_video_path = f"/app/b_roll_rag/data/input/{args.video}" 
         
         if args.video != "None" and os.path.exists(dummy_video_path):
             with open(dummy_video_path, "rb") as f:
