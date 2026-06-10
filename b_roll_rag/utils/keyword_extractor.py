@@ -1,20 +1,25 @@
 """
 TLDR: Uses NLTK to strip stop words and extract core nouns/verbs from natural sentences.
 """
+import os
 import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.tag import pos_tag
 
-# Ensure required lightweight NLTK resources are downloaded
+# Ensure required lightweight NLTK resources are downloaded to a writable cache directory
+nltk_data_dir = os.environ.get("HF_HOME", "/tmp") + "/nltk_data"
+os.makedirs(nltk_data_dir, exist_ok=True)
+nltk.data.path.append(nltk_data_dir)
+
 try:
     nltk.data.find('tokenizers/punkt')
     nltk.data.find('taggers/averaged_perceptron_tagger')
     nltk.data.find('corpora/stopwords')
 except LookupError:
-    nltk.download('punkt', quiet=True)
-    nltk.download('averaged_perceptron_tagger', quiet=True)
-    nltk.download('stopwords', quiet=True)
+    nltk.download('punkt', download_dir=nltk_data_dir, quiet=True)
+    nltk.download('averaged_perceptron_tagger', download_dir=nltk_data_dir, quiet=True)
+    nltk.download('stopwords', download_dir=nltk_data_dir, quiet=True)
 
 class KeywordExtractor:
     @staticmethod
