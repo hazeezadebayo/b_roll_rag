@@ -53,11 +53,13 @@ function run_pipeline() {
         ENV_ARG="-e PEXELS_API_KEY=$PEXELS_API_KEY"
     fi
 
+    mkdir -p "$DATA_DIR" "$CACHE_DIR"
+
     # CRUCIAL FIX: Inject HF_HOME so transformers library knows exactly where to look/save inside the bound volume
-    docker run --rm \
+    docker run --rm --user $(id -u):$(id -g) \
         -v "$PROJECT_DIR:/app" \
-        -v "$CACHE_DIR:/root/.cache/huggingface" \
-        -e HF_HOME=/root/.cache/huggingface \
+        -v "$CACHE_DIR:/.cache/huggingface" \
+        -e HF_HOME=/.cache/huggingface \
         -w /app \
         $ENV_ARG \
         b-roll-rag-app \
