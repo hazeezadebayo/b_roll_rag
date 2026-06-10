@@ -2,5 +2,6 @@
 __pycache__/
 *.pyc
 .hf_cache/
-b_roll_rag/data/
-ugc/data/
+# Ignore generated output files but keep the output folder structure
+b_roll_rag/data/output/*
+!b_roll_rag/data/output/.gitkeep
