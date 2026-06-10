@@ -7,7 +7,7 @@ COMMAND=$1
 MODEL_NAME=${2:-clip}
 TOP_K=${3:-3}
 
-PROJECT_DIR="/home/azeez/ws/dev_env/py_code/projects/b_roll_rag"
+PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DATA_DIR="$PROJECT_DIR/b_roll_rag/data"
 CACHE_DIR="$PROJECT_DIR/.hf_cache"
 

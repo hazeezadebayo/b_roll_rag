@@ -15,7 +15,7 @@ The golden rule of this repo: **We do not pollute the host machine.** Everything
 Before running any tests, you must build the container environment. This container comes pre-loaded with PyTorch, FAISS, FFmpeg, and all necessary dependencies.
 
 ```bash
-cd /home/azeez/ws/dev_env/py_code/projects/b_roll_rag
+cd path/to/b_roll_rag
 ./run_b_roll_rag.sh build
 ```
 
@@ -78,7 +78,7 @@ The pipeline logic is also exposed via a `FastAPI` server. We have a dedicated t
 To run the API test suite inside the container:
 
 ```bash
-docker run --rm --env-file /home/azeez/ws/dev_env/py_code/projects/b_roll_rag/.env -v "/home/azeez/ws/dev_env/py_code/projects/b_roll_rag:/app" -w /app b-roll-rag-app python b_roll_rag/test/test_api.py --scenario ALL
+docker run --rm --env-file .env -v "$PWD:/app" -w /app b-roll-rag-app python b_roll_rag/test/test_api.py --scenario ALL
 ```
 
 **What this test does:**
@@ -95,14 +95,14 @@ If you just want to generate high-quality fallback avatars directly (without run
 **Basic Usage:**
 
 ```bash
-docker run --rm -v "/home/azeez/ws/dev_env/py_code/projects/b_roll_rag:/app" -w /app b-roll-rag-app python b_roll_rag/utils/ugc_avatar_studio_fallback.py --speech-text "Hello junior engineer, welcome to the team!"
+docker run --rm -v "$PWD:/app" -w /app b-roll-rag-app python b_roll_rag/utils/ugc_avatar_studio_fallback.py --speech-text "Hello junior engineer, welcome to the team!"
 ```
 
 **Customizing the Avatar:**
 You can change the character preset and output explicitly:
 
 ```bash
-docker run --rm -v "/home/azeez/ws/dev_env/py_code/projects/b_roll_rag:/app" -w /app b-roll-rag-app python b_roll_rag/utils/ugc_avatar_studio_fallback.py \
+docker run --rm -v "$PWD:/app" -w /app b-roll-rag-app python b_roll_rag/utils/ugc_avatar_studio_fallback.py \
   --character female2 \
   --speech-text "Testing the fallback generation with face paint." \
   --output b_roll_rag/data/female_avatar.mp4
