@@ -5,3 +5,8 @@ __pycache__/
 # Ignore generated output files but keep the output folder structure
 b_roll_rag/data/output/*
 !b_roll_rag/data/output/.gitkeep
+
+# Ignore local AI agent logs and living documents
+output_log.md
+project_report.md
+git_workflow.md
