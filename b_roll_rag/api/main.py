@@ -17,7 +17,7 @@ app = FastAPI(title="b_roll_rag Video Semantic Search")
 model = None
 processor = None
 search_engine = None
-UPLOAD_DIR = "/tmp/b_roll_rag_uploads"
+UPLOAD_DIR = "/app/b_roll_rag/data"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 @app.on_event("startup")
