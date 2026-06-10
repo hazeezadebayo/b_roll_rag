@@ -85,12 +85,22 @@ async def search_video(req: QueryRequest):
             return [{"score": 0.0, "scene": {"scene_idx": -1, "start_time": 0.0, "end_time": 0.0}, "video_url": fallback_path}]
     
     response = []
-    for res in results:
+    
+    report_lines = [
+        f"Search Report for Query: '{req.query}'",
+        f"Top K Requested: {req.top_k}",
+        f"Total Scenes Matched: {len(results)}",
+        "-" * 40
+    ]
+
+    for idx, res in enumerate(results):
+        rank = idx + 1
         scene = res["scene"]
         start_time = scene["start_time"]
         end_time = scene["end_time"]
+        score = res.get("score", 0.0)
         
-        output_path = os.path.join(UPLOAD_DIR, f"cut_{uuid.uuid4()}.mp4")
+        output_path = os.path.join(UPLOAD_DIR, f"cut_rank{rank}_{uuid.uuid4().hex[:8]}.mp4")
         
         try:
             source_video = scene.get("video_path", getattr(app.state, "current_video", None))
@@ -104,11 +114,20 @@ async def search_video(req: QueryRequest):
                 output_path
             )
             res["video_url"] = output_path
+            
+            report_lines.append(f"Rank {rank}: Score={score:.4f} | Range: {start_time:.2f}s - {end_time:.2f}s | Output: {os.path.basename(output_path)}")
         except Exception as e:
             print(f"Error cutting video: {e}")
             res["video_url"] = None
+            report_lines.append(f"Rank {rank}: ERROR - {e}")
             
         response.append(res)
+        
+    try:
+        with open(os.path.join(UPLOAD_DIR, "report.txt"), "w") as f:
+            f.write("\n".join(report_lines) + "\n")
+    except Exception as e:
+        print(f"Failed to write report.txt: {e}")
         
     return response
 
